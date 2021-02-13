@@ -232,7 +232,7 @@ class CommandHandler extends AkairoHandler {
                     if (o.partial) await o.fetch();
                     if (m.partial) await m.fetch();
                     if (o.content === m.content) return;
-                    if (this.handleEdits) this.handle(m);
+                    if (this.handleEdits) this.handle(m, true);
                 });
             }
         });
@@ -335,9 +335,10 @@ class CommandHandler extends AkairoHandler {
     /**
      * Handles a message.
      * @param {Message} message - Message to handle.
+     * @param {boolean} isUpdate - Check if its an update
      * @returns {Promise<?boolean>}
      */
-    async handle(message) {
+    async handle(message, isUpdate = false) {
         try {
             if (this.fetchMembers && message.guild && !message.member && !message.webhookID) {
                 await message.guild.members.fetch(message.author);
@@ -379,7 +380,7 @@ class CommandHandler extends AkairoHandler {
                 ran = await this.handleDirectCommand(message, parsed.content, parsed.command);
             }
 
-            if (ran === false) {
+            if (ran === false && !isUpdate) {
                 this.emit(CommandHandlerEvents.MESSAGE_INVALID, message);
                 return false;
             }
