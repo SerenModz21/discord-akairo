@@ -8,68 +8,63 @@ const AkairoModule = require('../AkairoModule');
  * @extends {AkairoModule}
  */
 class Listener extends AkairoModule {
-    constructor(id, {
-        category,
-        emitter,
-        event,
-        type = 'on'
-    } = {}) {
+    constructor(id, { category, emitter, event, type = 'on' } = {}) {
         super(id, { category });
 
         /**
-         * The event emitter.
-         * @type {string|EventEmitter}
-         */
+     * The event emitter.
+     * @type {string|EventEmitter}
+     */
         this.emitter = emitter;
 
         /**
-         * The event name listened to.
-         * @type {string}
-         */
+     * The event name listened to.
+     * @type {string}
+     */
         this.event = event;
 
         /**
-         * Type of listener.
-         * @type {string}
-         */
+     * Type of listener.
+     * @type {string}
+     */
         this.type = type;
 
         /**
-         * The ID of this listener.
-         * @name Listener#id
-         * @type {string}
-         */
+     * The ID of this listener.
+     * @name Listener#id
+     * @type {string}
+     */
 
-        /**
-         * The listener handler.
-         * @name Listener#handler
-         * @type {ListenerHandler}
-         */
+    /**
+     * The listener handler.
+     * @name Listener#handler
+     * @type {ListenerHandler}
+     */
     }
 
     /**
-     * Executes the listener.
-     * @abstract
-     * @param {...args} [args] - Arguments.
-     * @returns {any}
-     */
+   * Executes the listener.
+   * @abstract
+   * @param {...args} [args] - Arguments.
+   * @returns {any}
+   */
     exec() {
         throw new AkairoError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
     }
 
     /**
-     * Reloads the listener.
-     * @method
-     * @name Listener#reload
-     * @returns {Listener}
-     */
+   * Reloads the listener.
+   * @method
+   * @name Listener#reload
+   * @returns {Listener}
+   */
 
     /**
-     * Removes the listener.
-     * @method
-     * @name Listener#remove
-     * @returns {Listener}
-     */
+   * Removes the listener.
+   * @method
+   * @name Listener#remove
+   * @returns {Listener}
+   */
 }
 
 module.exports = Listener;

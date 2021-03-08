@@ -15,23 +15,23 @@ class AkairoClient extends Client {
         const { ownerID = '' } = options;
 
         /**
-         * The ID of the owner(s).
-         * @type {Snowflake|Snowflake[]}
-         */
+     * The ID of the owner(s).
+     * @type {Snowflake|Snowflake[]}
+     */
         this.ownerID = ownerID;
 
         /**
-         * Utility methods.
-         * @type {ClientUtil}
-         */
+     * Utility methods.
+     * @type {ClientUtil}
+     */
         this.util = new ClientUtil(this);
     }
 
     /**
-     * Checks if a user is the owner of this bot.
-     * @param {UserResolvable} user - User to check.
-     * @returns {boolean}
-     */
+   * Checks if a user is the owner of this bot.
+   * @param {UserResolvable} user - User to check.
+   * @returns {boolean}
+   */
     isOwner(user) {
         const id = this.users.resolveID(user);
         return Array.isArray(this.ownerID)

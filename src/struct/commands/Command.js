@@ -41,9 +41,9 @@ class Command extends AkairoModule {
         } = options;
 
         /**
-         * Command names.
-         * @type {string[]}
-         */
+     * Command names.
+     * @type {string[]}
+     */
         this.aliases = aliases;
 
         const { flagWords, optionFlagWords } = Array.isArray(args)
@@ -59,101 +59,111 @@ class Command extends AkairoModule {
 
         this.argumentRunner = new ArgumentRunner(this);
         this.argumentGenerator = Array.isArray(args)
-            ? ArgumentRunner.fromArguments(args.map(arg => [arg.id, new Argument(this, arg)]))
+            ? ArgumentRunner.fromArguments(
+                args.map(arg => [arg.id, new Argument(this, arg)])
+            )
             : args.bind(this);
 
         /**
-         * Usable only in this channel type.
-         * @type {?string}
-         */
+     * Usable only in this channel type.
+     * @type {?string}
+     */
         this.channel = channel;
 
         /**
-         * Usable only by the client owner.
-         * @type {boolean}
-         */
+     * Usable only by the client owner.
+     * @type {boolean}
+     */
         this.ownerOnly = Boolean(ownerOnly);
 
         /**
-         * Whether or not this command can be ran by an edit.
-         * @type {boolean}
-         */
+     * Whether or not this command can be ran by an edit.
+     * @type {boolean}
+     */
         this.editable = Boolean(editable);
 
         /**
-         * Whether or not to type during command execution.
-         * @type {boolean}
-         */
+     * Whether or not to type during command execution.
+     * @type {boolean}
+     */
         this.typing = Boolean(typing);
 
         /**
-         * Cooldown in milliseconds.
-         * @type {?number}
-         */
+     * Cooldown in milliseconds.
+     * @type {?number}
+     */
         this.cooldown = cooldown;
 
         /**
-         * Uses allowed before cooldown.
-         * @type {number}
-         */
+     * Uses allowed before cooldown.
+     * @type {number}
+     */
         this.ratelimit = ratelimit;
 
         /**
-         * Default prompt options.
-         * @type {DefaultArgumentOptions}
-         */
+     * Default prompt options.
+     * @type {DefaultArgumentOptions}
+     */
         this.argumentDefaults = argumentDefaults;
 
         /**
-         * Description of the command.
-         * @type {string|any}
-         */
-        this.description = Array.isArray(description) ? description.join('\n') : description;
+     * Description of the command.
+     * @type {string|any}
+     */
+        this.description = Array.isArray(description)
+            ? description.join('\n')
+            : description;
 
         /**
-         * Command prefix overwrite.
-         * @type {?string|string[]|PrefixSupplier}
-         */
+     * Command prefix overwrite.
+     * @type {?string|string[]|PrefixSupplier}
+     */
         this.prefix = typeof prefix === 'function' ? prefix.bind(this) : prefix;
 
         /**
-         * Permissions required to run command by the client.
-         * @type {PermissionResolvable|PermissionResolvable[]|MissingPermissionSupplier}
-         */
-        this.clientPermissions = typeof clientPermissions === 'function' ? clientPermissions.bind(this) : clientPermissions;
+     * Permissions required to run command by the client.
+     * @type {PermissionResolvable|PermissionResolvable[]|MissingPermissionSupplier}
+     */
+        this.clientPermissions
+      = typeof clientPermissions === 'function'
+                ? clientPermissions.bind(this)
+                : clientPermissions;
 
         /**
-         * Permissions required to run command by the user.
-         * @type {PermissionResolvable|PermissionResolvable[]|MissingPermissionSupplier}
-         */
-        this.userPermissions = typeof userPermissions === 'function' ? userPermissions.bind(this) : userPermissions;
+     * Permissions required to run command by the user.
+     * @type {PermissionResolvable|PermissionResolvable[]|MissingPermissionSupplier}
+     */
+        this.userPermissions
+      = typeof userPermissions === 'function'
+                ? userPermissions.bind(this)
+                : userPermissions;
 
         /**
-         * The regex trigger for this command.
-         * @type {RegExp|RegexSupplier}
-         */
+     * The regex trigger for this command.
+     * @type {RegExp|RegexSupplier}
+     */
         this.regex = typeof regex === 'function' ? regex.bind(this) : regex;
 
         /**
-         * Checks if the command should be ran by using an arbitrary condition.
-         * @method
-         * @param {Message} message - Message being handled.
-         * @returns {boolean}
-         */
+     * Checks if the command should be ran by using an arbitrary condition.
+     * @method
+     * @param {Message} message - Message being handled.
+     * @returns {boolean}
+     */
         this.condition = condition.bind(this);
 
         /**
-         * Runs before argument parsing and execution.
-         * @method
-         * @param {Message} message - Message being handled.
-         * @returns {any}
-         */
+     * Runs before argument parsing and execution.
+     * @method
+     * @param {Message} message - Message being handled.
+     * @returns {any}
+     */
         this.before = before.bind(this);
 
         /**
-         * The key supplier for the locker.
-         * @type {?KeySupplier}
-         */
+     * The key supplier for the locker.
+     * @type {?KeySupplier}
+     */
         this.lock = lock;
 
         if (typeof lock === 'string') {
@@ -166,72 +176,78 @@ class Command extends AkairoModule {
 
         if (this.lock) {
             /**
-             * Stores the current locks.
-             * @type {?Set<string>}
-             */
+       * Stores the current locks.
+       * @type {?Set<string>}
+       */
             this.locker = new Set();
         }
 
         /**
-         * ID of user(s) to ignore cooldown or a function to ignore.
-         * @type {?Snowflake|Snowflake[]|IgnoreCheckPredicate}
-         */
-        this.ignoreCooldown = typeof ignoreCooldown === 'function' ? ignoreCooldown.bind(this) : ignoreCooldown;
+     * ID of user(s) to ignore cooldown or a function to ignore.
+     * @type {?Snowflake|Snowflake[]|IgnoreCheckPredicate}
+     */
+        this.ignoreCooldown
+      = typeof ignoreCooldown === 'function'
+                ? ignoreCooldown.bind(this)
+                : ignoreCooldown;
 
         /**
-         * ID of user(s) to ignore `userPermissions` checks or a function to ignore.
-         * @type {?Snowflake|Snowflake[]|IgnoreCheckPredicate}
-         */
-        this.ignorePermissions = typeof ignorePermissions === 'function' ? ignorePermissions.bind(this) : ignorePermissions;
+     * ID of user(s) to ignore `userPermissions` checks or a function to ignore.
+     * @type {?Snowflake|Snowflake[]|IgnoreCheckPredicate}
+     */
+        this.ignorePermissions
+      = typeof ignorePermissions === 'function'
+                ? ignorePermissions.bind(this)
+                : ignorePermissions;
 
         /**
-         * The ID of this command.
-         * @name Command#id
-         * @type {string}
-         */
+     * The ID of this command.
+     * @name Command#id
+     * @type {string}
+     */
 
-        /**
-         * The command handler.
-         * @name Command#handler
-         * @type {CommandHandler}
-         */
+    /**
+     * The command handler.
+     * @name Command#handler
+     * @type {CommandHandler}
+     */
     }
 
     /**
-     * Executes the command.
-     * @abstract
-     * @param {Message} message - Message that triggered the command.
-     * @param {any} args - Evaluated arguments.
-     * @returns {any}
-     */
+   * Executes the command.
+   * @abstract
+   * @param {Message} message - Message that triggered the command.
+   * @param {any} args - Evaluated arguments.
+   * @returns {any}
+   */
     exec() {
         throw new AkairoError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
     }
 
     /**
-     * Parses content using the command's arguments.
-     * @param {Message} message - Message to use.
-     * @param {string} content - String to parse.
-     * @returns {Promise<Flag|any>}
-     */
+   * Parses content using the command's arguments.
+   * @param {Message} message - Message to use.
+   * @param {string} content - String to parse.
+   * @returns {Promise<Flag|any>}
+   */
     parse(message, content) {
         const parsed = this.contentParser.parse(content);
         return this.argumentRunner.run(message, parsed, this.argumentGenerator);
     }
 
     /**
-     * Reloads the command.
-     * @method
-     * @name Command#reload
-     * @returns {Command}
-     */
+   * Reloads the command.
+   * @method
+   * @name Command#reload
+   * @returns {Command}
+   */
 
     /**
-     * Removes the command.
-     * @method
-     * @name Command#remove
-     * @returns {Command}
-     */
+   * Removes the command.
+   * @method
+   * @name Command#remove
+   * @returns {Command}
+   */
 }
 
 module.exports = Command;

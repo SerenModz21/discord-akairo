@@ -11,16 +11,16 @@ class Category extends Collection {
         super(iterable);
 
         /**
-         * ID of the category.
-         * @type {string}
-         */
+     * ID of the category.
+     * @type {string}
+     */
         this.id = id;
     }
 
     /**
-     * Calls `reload()` on all items in this category.
-     * @returns {Category}
-     */
+   * Calls `reload()` on all items in this category.
+   * @returns {Category}
+   */
     reloadAll() {
         for (const m of Array.from(this.values())) {
             if (m.filepath) m.reload();
@@ -30,9 +30,9 @@ class Category extends Collection {
     }
 
     /**
-     * Calls `remove()` on all items in this category.
-     * @returns {Category}
-     */
+   * Calls `remove()` on all items in this category.
+   * @returns {Category}
+   */
     removeAll() {
         for (const m of Array.from(this.values())) {
             if (m.filepath) m.remove();
@@ -42,9 +42,9 @@ class Category extends Collection {
     }
 
     /**
-     * Returns the ID.
-     * @returns {string}
-     */
+   * Returns the ID.
+   * @returns {string}
+   */
     toString() {
         return this.id;
     }

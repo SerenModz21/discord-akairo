@@ -54,12 +54,10 @@ const { ArgumentMatches } = require('../../util/Constants');
  */
 
 class Tokenizer {
-    constructor(content, {
-        flagWords = [],
-        optionFlagWords = [],
-        quoted = true,
-        separator
-    } = {}) {
+    constructor(
+        content,
+        { flagWords = [], optionFlagWords = [], quoted = true, separator } = {}
+    ) {
         this.content = content;
         this.flagWords = flagWords;
         this.optionFlagWords = optionFlagWords;
@@ -72,7 +70,11 @@ class Tokenizer {
     }
 
     startsWith(str) {
-        return this.content.slice(this.position, this.position + str.length).toLowerCase() === str.toLowerCase();
+        return (
+            this.content
+                .slice(this.position, this.position + str.length)
+                .toLowerCase() === str.toLowerCase()
+        );
     }
 
     match(regex) {
@@ -204,11 +206,8 @@ class Tokenizer {
     }
 
     runWord() {
-        const wordRegex = this.state === 0
-            ? /^\S+/
-            : this.state === 1
-                ? /^[^\s"]+/
-                : /^[^\s”]+/;
+        const wordRegex
+      = this.state === 0 ? /^\S+/ : this.state === 1 ? /^[^\s"]+/ : /^[^\s”]+/;
 
         const wordMatch = this.match(wordRegex);
         if (wordMatch) {
@@ -256,11 +255,11 @@ class Parser {
         this.separated = separated;
         this.position = 0;
         /*
-         * Phrases are `{ type: 'Phrase', value, raw }`.
-         * Flags are `{ type: 'Flag', key, raw }`.
-         * Option flags are `{ type: 'OptionFlag', key, value, raw }`.
-         * The `all` property is partitioned into `phrases`, `flags`, and `optionFlags`.
-         */
+     * Phrases are `{ type: 'Phrase', value, raw }`.
+     * Flags are `{ type: 'Flag', key, raw }`.
+     * Option flags are `{ type: 'OptionFlag', key, value, raw }`.
+     * The `all` property is partitioned into `phrases`, `flags`, and `optionFlags`.
+     */
         this.results = {
             all: [],
             phrases: [],
@@ -274,7 +273,10 @@ class Parser {
     }
 
     lookaheadN(n, ...types) {
-        return this.tokens[this.position + n] != null && types.includes(this.tokens[this.position + n].type);
+        return (
+            this.tokens[this.position + n] != null
+      && types.includes(this.tokens[this.position + n].type)
+        );
     }
 
     lookahead(...types) {
@@ -287,11 +289,15 @@ class Parser {
             return this.tokens[this.position - 1];
         }
 
-        throw new Error(`Unexpected token ${this.tokens[this.position].value} of type ${this.tokens[this.position].type} (this should never happen)`);
+        throw new Error(
+            `Unexpected token ${this.tokens[this.position].value} of type ${
+                this.tokens[this.position].type
+            } (this should never happen)`
+        );
     }
 
     parse() {
-        // -1 for EOF.
+    // -1 for EOF.
         while (this.position < this.tokens.length - 1) {
             this.runArgument();
         }
@@ -305,7 +311,9 @@ class Parser {
         if (this.lookahead('FlagWord', 'OptionFlagWord')) {
             const parsed = this.parseFlag();
             const trailing = this.lookahead('WS') ? this.match('WS').value : '';
-            const separator = this.lookahead('Separator') ? this.match('Separator').value : '';
+            const separator = this.lookahead('Separator')
+                ? this.match('Separator').value
+                : '';
             parsed.raw = `${leading}${parsed.raw}${trailing}${separator}`;
             this.results.all.push(parsed);
             if (parsed.type === 'Flag') {
@@ -319,7 +327,9 @@ class Parser {
 
         const parsed = this.parsePhrase();
         const trailing = this.lookahead('WS') ? this.match('WS').value : '';
-        const separator = this.lookahead('Separator') ? this.match('Separator').value : '';
+        const separator = this.lookahead('Separator')
+            ? this.match('Separator').value
+            : '';
         parsed.raw = `${leading}${parsed.raw}${trailing}${separator}`;
         this.results.all.push(parsed);
         this.results.phrases.push(parsed);
@@ -334,7 +344,12 @@ class Parser {
 
         // Otherwise, `this.lookahead('OptionFlagWord')` should be true.
         const flag = this.match('OptionFlagWord');
-        const parsed = { type: 'OptionFlag', key: flag.value, value: '', raw: flag.value };
+        const parsed = {
+            type: 'OptionFlag',
+            key: flag.value,
+            value: '',
+            raw: flag.value
+        };
         const ws = this.lookahead('WS') ? this.match('WS') : null;
         if (ws != null) {
             parsed.raw += ws.value;
@@ -386,7 +401,9 @@ class Parser {
                     }
                 }
 
-                const endQuote = this.lookahead('EndQuote') ? this.match('EndQuote') : null;
+                const endQuote = this.lookahead('EndQuote')
+                    ? this.match('EndQuote')
+                    : null;
                 if (endQuote != null) {
                     parsed.raw += endQuote.value;
                 }
@@ -396,7 +413,11 @@ class Parser {
 
             if (this.lookahead('EndQuote')) {
                 const endQuote = this.match('EndQuote');
-                const parsed = { type: 'Phrase', value: endQuote.value, raw: endQuote.value };
+                const parsed = {
+                    type: 'Phrase',
+                    value: endQuote.value,
+                    raw: endQuote.value
+                };
                 return parsed;
             }
         }
@@ -443,10 +464,10 @@ class ContentParser {
     }
 
     /**
-     * Parses content.
-     * @param {string} content - Content to parse.
-     * @returns {ContentParserResult}
-     */
+   * Parses content.
+   * @param {string} content - Content to parse.
+   * @returns {ContentParserResult}
+   */
     parse(content) {
         const tokens = new Tokenizer(content, {
             flagWords: this.flagWords,
@@ -459,10 +480,10 @@ class ContentParser {
     }
 
     /**
-     * Extracts the flags from argument options.
-     * @param {ArgumentOptions[]} args - Argument options.
-     * @returns {ExtractedFlags}
-     */
+   * Extracts the flags from argument options.
+   * @param {ArgumentOptions[]} args - Argument options.
+   * @returns {ExtractedFlags}
+   */
     static getFlags(args) {
         const res = {
             flagWords: [],
@@ -470,8 +491,14 @@ class ContentParser {
         };
 
         for (const arg of args) {
-            const arr = res[arg.match === ArgumentMatches.FLAG ? 'flagWords' : 'optionFlagWords'];
-            if (arg.match === ArgumentMatches.FLAG || arg.match === ArgumentMatches.OPTION) {
+            const arr
+        = res[
+            arg.match === ArgumentMatches.FLAG ? 'flagWords' : 'optionFlagWords'
+        ];
+            if (
+                arg.match === ArgumentMatches.FLAG
+        || arg.match === ArgumentMatches.OPTION
+            ) {
                 if (Array.isArray(arg.flag)) {
                     arr.push(...arg.flag);
                 } else {
