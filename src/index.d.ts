@@ -6,6 +6,7 @@ declare module 'discord-akairo' {
         User, UserResolvable, GuildMember,
         Channel, Role, Emoji, Guild,
         PermissionResolvable, StringResolvable, Snowflake
+        // @ts-ignore
     } from 'discord.js';
 
     import { EventEmitter } from 'events';
@@ -649,17 +650,17 @@ declare module 'discord-akairo' {
     export type ArgumentMatch = 'phrase' | 'flag' | 'option' | 'rest' | 'separate' | 'text' | 'content' | 'restContent' | 'none';
 
     export type ArgumentType = 'string' | 'lowercase' | 'uppercase' | 'charCodes'
-        | 'number' | 'integer' | 'bigint' | 'emojint'
-        | 'url' | 'date' | 'color'
-        | 'user' | 'users' | 'member' | 'members' | 'relevant' | 'relevants'
-        | 'channel' | 'channels' | 'textChannel' | 'textChannels' | 'voiceChannel' | 'voiceChannels' | 'categoryChannel' | 'categoryChannels' | 'newsChannel' | 'newsChannels' | 'storeChannel' | 'storeChannels'
-        | 'role' | 'roles' | 'emoji' | 'emojis' | 'guild' | 'guilds'
-        | 'message' | 'guildMessage' | 'relevantMessage' | 'invite'
-        | 'userMention' | 'memberMention' | 'channelMention' | 'roleMention' | 'emojiMention'
-        | 'commandAlias' | 'command' | 'inhibitor' | 'listener'
-        | (string | string[])[]
-        | RegExp
-        | string;
+      | 'number' | 'integer' | 'bigint' | 'emojint'
+      | 'url' | 'date' | 'color'
+      | 'user' | 'users' | 'member' | 'members' | 'relevant' | 'relevants'
+      | 'channel' | 'channels' | 'textChannel' | 'textChannels' | 'voiceChannel' | 'voiceChannels' | 'categoryChannel' | 'categoryChannels' | 'newsChannel' | 'newsChannels' | 'storeChannel' | 'storeChannels'
+      | 'role' | 'roles' | 'emoji' | 'emojis' | 'guild' | 'guilds'
+      | 'message' | 'guildMessage' | 'relevantMessage' | 'invite'
+      | 'userMention' | 'memberMention' | 'channelMention' | 'roleMention' | 'emojiMention'
+      | 'commandAlias' | 'command' | 'inhibitor' | 'listener'
+      | (string | string[])[]
+      | RegExp
+      | string;
 
     export type ArgumentGenerator = (message: Message, parsed: ContentParserResult, state: ArgumentRunnerState) => IterableIterator<ArgumentOptions | Flag>;
 
@@ -682,20 +683,20 @@ declare module 'discord-akairo' {
     export type MissingPermissionSupplier = (message: Message) => Promise<any> | any;
 
     export type OtherwiseContentModifier = (message: Message, text: string, data: FailureData)
-        => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
+      => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
 
     export type OtherwiseContentSupplier = (message: Message, data: FailureData)
-        => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
+      => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
 
     export type ParsedValuePredicate = (message: Message, phrase: string, value: any) => boolean;
 
     export type PrefixSupplier = (message: Message) => string | string[] | Promise<string | string[]>;
 
     export type PromptContentModifier = (message: Message, text: string, data: ArgumentPromptData)
-        => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
+      => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
 
     export type PromptContentSupplier = (message: Message, data: ArgumentPromptData)
-        => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
+      => StringResolvable | MessageOptions | MessageAdditions | Promise<StringResolvable | MessageOptions | MessageAdditions>;
 
     export type RegexSupplier = (message: Message) => RegExp;
 
