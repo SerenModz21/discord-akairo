@@ -224,15 +224,16 @@ class CommandHandler extends AkairoHandler {
         this.client.once('ready', () => {
             this.client.on('message', async m => {
                 if (m.partial) await m.fetch();
-                this.handle(m);
+                await this.handle(m);
             });
 
             if (this.handleEdits) {
                 this.client.on('messageUpdate', async (o, m) => {
+                    if (!o || !m) return;
                     if (o.partial) await o.fetch();
                     if (m.partial) await m.fetch();
                     if (o.content === m.content) return;
-                    if (this.handleEdits) this.handle(m, true);
+                    if (this.handleEdits) await this.handle(m, true);
                 });
             }
         });
